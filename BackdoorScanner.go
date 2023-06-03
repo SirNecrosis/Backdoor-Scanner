@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"os"
 	"strconv"
@@ -34,17 +35,19 @@ func checkPort(ip string, port int, protocol string) int {
 	}
 
 	if err != nil {
-		return 1
+		log.Fatal("Failed to connect to socket")
 	}
+	log.Println("Connected to socket successfully")
 	defer sock.Close()
+
 	return 0
 }
 
 func scanBackdoor(ip string, port int, protocol string) {
 	if checkPort(ip, port, protocol) == 0 {
-		fmt.Printf("Port %d open on %s. Possible backdoor detected.\n", port, ip)
+		log.Printf("Port %d open on %s. Possible backdoor detected.\n", port, ip)
 	} else {
-		fmt.Printf("Port %d closed on %s. No backdoor detected.\n", port, ip)
+		log.Printf("Port %d closed on %s. No backdoor detected.\n", port, ip)
 	}
 }
 
