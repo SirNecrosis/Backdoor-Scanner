@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net"
 	"os"
 	"strconv"
@@ -35,29 +34,22 @@ func checkPort(ip string, port int, protocol string) int {
 	}
 
 	if err != nil {
-		log.Fatal("Failed to connect to socket")
+		return 1
 	}
-	log.Println("Connected to socket successfully")
 	defer sock.Close()
-
 	return 0
 }
 
 func scanBackdoor(ip string, port int, protocol string) {
 	if checkPort(ip, port, protocol) == 0 {
-		log.Printf("Port %d open on %s. Possible backdoor detected.\n", port, ip)
+		fmt.Printf("Port %d open on %s. Possible backdoor detected.\n", port, ip)
 	} else {
-		log.Printf("Port %d closed on %s. No backdoor detected.\n", port, ip)
+		fmt.Printf("Port %d closed on %s. No backdoor detected.\n", port, ip)
 	}
 }
 
 func showHelp() {
-	fmt.Println("Backdoor Scanner Tool")
-	fmt.Println("---------------------")
-	fmt.Println("Usage: go run backdoor_scanner.go")
-	fmt.Println()
-	fmt.Println("Options:")
-	fmt.Println("  -h, --help     Show this help menu")
+	fmt.Printf("Backdoor Scanner Tool \n --------------- \n Usage: go run backdoor_scanner.go \n Options: -h, --help Show this help menu")
 }
 
 func main() {
@@ -76,6 +68,7 @@ func main() {
 	var targetIP string
 	fmt.Print("Enter the IP address to scan for backdoors: ")
 	fmt.Scan(&targetIP)
+
 	var protocol string
 	fmt.Print("Enter the protocol to scan for (TCP/UDP/Both): ")
 	fmt.Scan(&protocol)
