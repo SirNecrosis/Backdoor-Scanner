@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net"
 	"os"
 	"strconv"
@@ -34,8 +35,9 @@ func checkPort(ip string, port int, protocol string) int {
 	}
 
 	if err != nil {
-		return 1
+		log.Fatal("Failed to enumerate specified ports")
 	}
+
 	defer sock.Close()
 	return 0
 }
