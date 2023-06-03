@@ -5,18 +5,32 @@ import (
 	"net"
 	"os"
 	"strconv"
+	"strings"
 )
+
+type Config struct {
+	backDoorPorts []int
+	protocol      []string
+}
+
+// backdoorPorts := []int{21, 22, 23, 25, 53, 80, 443, 3306, 3389, 8080}
+func ScannerConfig() Config {
+	return Config{
+		backDoorPorts: []int{21, 22, 23, 25, 53, 80, 443, 3306, 3389, 8080},
+		protocol:      []string{"TCP", "UDP"},
+	}
+}
 
 func checkPort(ip string, port int, protocol string) int {
 	var sock net.Conn
 	var err error
 
-	if protocol == "TCP" {
-		sock, err = net.Dial("tcp", ip+":"+strconv.Itoa(port))
-	} else if protocol == "UDP" {
-		sock, err = net.Dial("udp", ip+":"+strconv.Itoa(port))
+	if protocol == ScannerConfig().protocol[0] {
+		sock, err = net.Dial(strings.ToLower(ScannerConfig().protocol[0]), ip+":"+strconv.Itoa(port))
+	} else if protocol == ScannerConfig().protocol[1] {
+		sock, err = net.Dial(strings.ToLower(ScannerConfig().protocol[1]), ip+":"+strconv.Itoa(port))
 	} else {
-		sock, err = net.Dial("tcp", ip+":"+strconv.Itoa(port))
+		sock, err = net.Dial(strings.ToLower(ScannerConfig().protocol[0]), ip+":"+strconv.Itoa(port))
 	}
 
 	if err != nil {
@@ -55,8 +69,6 @@ func main() {
 	}
 
 	// List of ports to scan for potential backdoors
-	backdoorPorts := []int{21, 22, 23, 25, 53, 80, 443, 3306, 3389, 8080}
-
 	// Prompt user to input target IP address
 	var targetIP string
 	fmt.Print("Enter the IP address to scan for backdoors: ")
@@ -65,7 +77,7 @@ func main() {
 	fmt.Print("Enter the protocol to scan for (TCP/UDP/Both): ")
 	fmt.Scan(&protocol)
 
-	for _, port := range backdoorPorts {
+	for _, port := range ScannerConfig().backDoorPorts {
 		scanBackdoor(targetIP, port, protocol)
 	}
 }
