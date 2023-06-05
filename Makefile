@@ -1,6 +1,6 @@
 .PHONY: run
 run:
-	go run cmd/BackdoorScanner.go
+	go run cmd/main.go
 
 .PHONY: compile
 compile:
