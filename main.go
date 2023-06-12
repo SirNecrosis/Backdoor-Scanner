@@ -7,8 +7,6 @@ import (
 	"github.com/SirNecrosis/Backdoor-Scanner/scanner"
 )
 
-
-
 func main() {
 	if len(os.Args) == 2 && (os.Args[1] == "-h" || os.Args[1] == "--help") {
 		scanner.ShowHelp()
