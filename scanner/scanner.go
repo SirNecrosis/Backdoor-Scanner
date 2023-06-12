@@ -29,7 +29,9 @@ func portOpt(ip string, port int, protocol string) int {
 			sock, err = net.Dial("udp", ip+":"+strconv.Itoa(port))
 		default:
 			sock, err = net.Dial("tcp", ip+":"+strconv.Itoa(port))
-	}; if err != nil {
+	} 
+	
+	if err != nil {
 		tools.Log().Fatal("Failed to enumerate ports!")
 	}
 
